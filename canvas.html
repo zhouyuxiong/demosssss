@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>canvas</title>
+  <style>
+    canvas {
+      border: 1px solid #000;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="mycanvas" width="500" height="500"></canvas>
+</body>
+
+</html>
+<script>
+  let mycanvas = document.getElementById('mycanvas')
+
+  let ctx = mycanvas.getContext('2d')
+
+  function play() {
+    ctx.clearRect(0, 0, mycanvas.width, mycanvas.height)
+    ctx.save()
+    ctx.translate(mycanvas.width / 2, mycanvas.height / 2)
+    bp()
+    run()
+    ctx.restore()
+    requestAnimationFrame(play)
+  }
+
+  play()
+
+  function bp() {
+    ctx.beginPath()
+    ctx.arc(0, 0, 200, 0, 2 * Math.PI)
+    ctx.stroke()
+
+    ctx.lineWidth = 6
+    for (var i = 0; i < 12; i++) {
+      ctx.beginPath()
+      ctx.moveTo(0, -160)
+      ctx.lineTo(0, -180)
+      ctx.stroke()
+      ctx.rotate(2 * Math.PI / 12)
+    }
+
+    ctx.lineWidth = 4
+    for (var i = 0; i < 60; i++) {
+      ctx.beginPath()
+      ctx.moveTo(0, -170)
+      ctx.lineTo(0, -180)
+      ctx.stroke()
+      ctx.rotate(2 * Math.PI / 60)
+    }
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.font = '20px Arial'
+    for (var i = 1; i <= 12; i++) {
+      ctx.fillText(i, Math.sin(2 * Math.PI / 12 * i) * 150, Math.cos(2 * Math.PI / 12 * i) * -150)
+    }
+
+
+    ctx.beginPath()
+    ctx.arc(0, 0, 10, 0, 2 * Math.PI)
+    ctx.fill()
+  }
+
+  function run() {
+    let date = new Date()
+    let h = date.getHours()
+    let m = date.getMinutes()
+    let s = date.getSeconds()
+
+    ctx.save()
+    ctx.lineWidth = 6
+    ctx.rotate(2 * Math.PI / 12 * h + (2 * Math.PI / 60 * m + 2 * Math.PI / 60 * s / 60) / 12)
+    ctx.beginPath()
+    ctx.moveTo(0, 15)
+    ctx.lineTo(0, -80)
+    ctx.stroke()
+    ctx.restore()
+
+    ctx.save()
+    ctx.lineWidth = 4
+    ctx.rotate(2 * Math.PI / 60 * m + 2 * Math.PI / 60 * s / 60)
+    ctx.beginPath()
+    ctx.moveTo(0, 15)
+    ctx.lineTo(0, -120)
+    ctx.stroke()
+    ctx.restore()
+
+    ctx.save()
+    ctx.lineWidth = 2
+    ctx.rotate(2 * Math.PI / 60 * s)
+    ctx.beginPath()
+    ctx.moveTo(0, 15)
+    ctx.lineTo(0, -140)
+    ctx.stroke()
+    ctx.restore()
+  }
+</script>
